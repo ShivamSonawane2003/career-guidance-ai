@@ -149,7 +149,7 @@ def main():
         st.markdown("### About")
         st.markdown("""
         This AI agent provides career guidance for 12th grade students in India.
-        This AI agent provides career guidance based on:
+        based on:
         - Your academic stream (PCM/PCB/Commerce/Arts/Vocational)
         - Your interests and aptitudes
         - Indian higher education pathways
@@ -164,11 +164,11 @@ def main():
             with httpx.Client() as client:
                 response = client.get(f"{API_BASE_URL}/health", timeout=5.0)
                 if response.status_code == 200:
-                    st.success("✅ Backend Connected")
+                    st.success("Backend Connected")
                 else:
-                    st.error("❌ Backend Error")
+                    st.error(" Backend Error")
         except:
-            st.error("❌ Backend Offline")
+            st.error(" Backend Offline")
             st.info(f"Expected at: {API_BASE_URL}")
     
     # Display chat messages
@@ -192,7 +192,7 @@ def main():
             if error:
                 st.session_state.messages.append({
                     "role": "assistant",
-                    "content": f"❌ {error}"
+                    "content": f" {error}"
                 })
             elif response:
                 st.session_state.complete = is_complete
