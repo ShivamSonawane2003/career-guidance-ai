@@ -15,7 +15,7 @@ if hasattr(st, 'secrets') and 'API_BASE_URL' in st.secrets:
 else:
     # Local development
     load_dotenv()
-    API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+    API_BASE_URL = os.getenv("API_BASE_URL", "https://career-guidance-ai-xo2g.onrender.com")
 
 # Page configuration
 st.set_page_config(
