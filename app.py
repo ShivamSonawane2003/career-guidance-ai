@@ -133,7 +133,7 @@ def main():
     # Header
     st.markdown("""
         <div class="main-header">
-            <h1>🎓 Career Guidance AI</h1>
+            <h1> Career Guidance AI</h1>
             <p>Bilingual Assistant for Indian 12th Grade Students</p>
         </div>
     """, unsafe_allow_html=True)
@@ -204,14 +204,14 @@ def main():
             # Rerun to update UI
             st.rerun()
     else:
-        st.info("💬 Conversation complete! Use the Restart button in the sidebar to start a new conversation.")
+        st.info(" Conversation complete! Use the Restart button in the sidebar to start a new conversation.")
     
     # Footer
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #666; padding: 1rem;">
         <small>
-        ⚠️ This guidance is indicative only. Please confirm your decision with a certified human career counselor.
+         This guidance is indicative only. Please confirm your decision with a certified human career counselor.
         </small>
     </div>
     """, unsafe_allow_html=True)
