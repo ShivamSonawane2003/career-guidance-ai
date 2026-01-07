@@ -5,21 +5,21 @@
       "subjects": ["Physics", "Chemistry", "Mathematics"],
       "careers": [
         {
-          "name": "Engineering (Various Specializations)",
+          "name": "Engineering (Various Specializations like Computer Science, Electronics, Mechanical, Civil, etc.)",
           "pathway": "JEE Main -> JEE Advanced -> B.Tech/B.E. (4 years) -> M.Tech (optional)",
           "entrance_exams": ["JEE Main", "JEE Advanced", "State Engineering Entrance Exams"],
           "skills": ["Problem-solving", "Mathematical aptitude", "Analytical thinking", "Technical skills"],
           "risks": "High competition, requires strong foundation in PCM subjects"
         },
         {
-          "name": "Architecture",
+          "name": "Architecture (B.Arch)",
           "pathway": "NATA/JEE Paper 2 -> B.Arch (5 years) -> M.Arch (optional)",
           "entrance_exams": ["NATA", "JEE Paper 2"],
           "skills": ["Creative design", "Spatial awareness", "Technical drawing", "Mathematical precision"],
           "risks": "Requires artistic aptitude along with technical skills"
         },
         {
-          "name": "Data Science / Analytics",
+          "name": "Data Science / Analytics (B.Tech Computer Science/IT)",
           "pathway": "JEE Main -> B.Tech Computer Science/IT -> Specialization in Data Science -> M.Tech/M.Sc (optional)",
           "entrance_exams": ["JEE Main", "State Engineering Entrance Exams"],
           "skills": ["Programming", "Statistics", "Machine Learning", "Data analysis"],
@@ -32,21 +32,21 @@
       "subjects": ["Physics", "Chemistry", "Biology"],
       "careers": [
         {
-          "name": "Medical Doctor (MBBS)",
+          "name": "Medical Doctor (MBBS/BDS)",
           "pathway": "NEET -> MBBS (5.5 years) -> MD/MS (3 years, optional)",
           "entrance_exams": ["NEET"],
           "skills": ["Biological sciences", "Patient care", "Critical thinking", "Empathy"],
           "risks": "Extremely high competition, long duration, high cost"
         },
         {
-          "name": "Pharmacy",
+          "name": "Pharmacy (B.Pharm)",
           "pathway": "NEET/State Pharmacy Entrance -> B.Pharm (4 years) -> M.Pharm (optional)",
           "entrance_exams": ["NEET", "State Pharmacy Entrance Exams"],
           "skills": ["Chemistry knowledge", "Attention to detail", "Research skills"],
           "risks": "Requires strong chemistry foundation"
         },
         {
-          "name": "Biotechnology / Life Sciences",
+          "name": "Biotechnology / Life Sciences (B.Sc Biotechnology)",
           "pathway": "NEET/JEE Main -> B.Sc Biotechnology -> M.Sc -> Ph.D (optional)",
           "entrance_exams": ["NEET", "JEE Main", "University-specific entrance exams"],
           "skills": ["Biology", "Research methodology", "Laboratory skills", "Analytical thinking"],
@@ -59,21 +59,21 @@
       "subjects": ["Accountancy", "Business Studies", "Economics", "Mathematics/Statistics"],
       "careers": [
         {
-          "name": "Chartered Accountancy (CA)",
+          "name": "Chartered Accountancy (CA/ICWA/CS)",
           "pathway": "12th Commerce -> CA Foundation -> CA Intermediate -> CA Final",
           "entrance_exams": ["CA Foundation (No entrance, direct registration)"],
           "skills": ["Accounting", "Taxation", "Auditing", "Financial analysis", "Attention to detail"],
           "risks": "Rigorous examination process, requires dedication and time"
         },
         {
-          "name": "Business Administration / Management",
+          "name": "Business Administration / Management (B.Com/BBA/MBA)",
           "pathway": "12th Commerce -> B.Com/BBA (3 years) -> MBA (2 years, optional)",
           "entrance_exams": ["CUET", "IPMAT", "State-level entrance exams"],
           "skills": ["Leadership", "Communication", "Strategic thinking", "Business acumen"],
           "risks": "MBA requires competitive entrance exams (CAT, XAT, etc.)"
         },
         {
-          "name": "Finance & Banking",
+          "name": "Finance & Banking (B.Com Finance/MBA Finance)",
           "pathway": "12th Commerce -> B.Com (Finance) -> M.Com/MBA Finance -> Professional certifications",
           "entrance_exams": ["CUET", "Banking exams (IBPS, SBI PO)"],
           "skills": ["Financial analysis", "Risk management", "Numerical ability", "Market understanding"],
@@ -86,21 +86,21 @@
       "subjects": ["History", "Political Science", "Geography", "Psychology", "Sociology", "Literature"],
       "careers": [
         {
-          "name": "Psychology / Counseling",
+          "name": "Psychology / Counseling (B.A Psychology)",
           "pathway": "12th Arts -> B.A Psychology (3 years) -> M.A Psychology -> M.Phil/Ph.D (optional)",
           "entrance_exams": ["CUET", "University-specific entrance exams"],
           "skills": ["Empathy", "Communication", "Research skills", "Analytical thinking"],
           "risks": "Requires higher education for professional practice, licensing required"
         },
         {
-          "name": "Law",
+          "name": "Law (B.A LL.B/LL.B/BA LLB/LLB)",
           "pathway": "12th Arts -> CLAT -> B.A LL.B (5 years) or LL.B (3 years after graduation) -> LL.M (optional)",
           "entrance_exams": ["CLAT", "AILET", "State-level law entrance exams"],
           "skills": ["Logical reasoning", "Communication", "Research", "Argumentation"],
           "risks": "Highly competitive entrance exams, requires strong English and reasoning"
         },
         {
-          "name": "Journalism & Mass Communication",
+          "name": "Journalism & Mass Communication (B.A Journalism/Mass Communication)",
           "pathway": "12th Arts -> B.A Journalism/Mass Communication (3 years) -> M.A (optional)",
           "entrance_exams": ["CUET", "University-specific entrance exams"],
           "skills": ["Writing", "Communication", "Current affairs", "Critical thinking"],
@@ -113,21 +113,21 @@
       "subjects": ["Various skill-based subjects"],
       "careers": [
         {
-          "name": "Skill-based Certifications & Entrepreneurship",
+          "name": "Skill-based Certifications & Entrepreneurship (Diploma in various skills like Computer Science, Electronics, Mechanical, Civil, etc.)",
           "pathway": "12th Vocational -> Skill Development Programs -> Certifications -> Entrepreneurship/Employment",
           "entrance_exams": ["Direct admission to skill programs"],
           "skills": ["Practical skills", "Problem-solving", "Business acumen", "Technical expertise"],
           "risks": "Requires identifying market demand, may need additional business skills"
         },
         {
-          "name": "Technical Trades & Apprenticeships",
+          "name": "Technical Trades & Apprenticeships (ITI/Diploma in various skills like Computer Science, Electronics, Mechanical, Civil, etc.)",
           "pathway": "12th Vocational -> ITI/Diploma -> Apprenticeship -> Skilled Employment",
           "entrance_exams": ["ITI entrance exams", "Diploma entrance exams"],
           "skills": ["Hands-on technical skills", "Attention to detail", "Safety awareness"],
           "risks": "Physical work involved, requires continuous skill upgradation"
         },
         {
-          "name": "Hospitality & Tourism",
+          "name": "Hospitality & Tourism (Diploma in Hospitality/Tourism)",
           "pathway": "12th Vocational -> Diploma in Hospitality/Tourism -> BHM (optional) -> Industry experience",
           "entrance_exams": ["Direct admission or entrance exams for BHM"],
           "skills": ["Customer service", "Communication", "Cultural awareness", "Problem-solving"],
@@ -140,87 +140,86 @@
     "general": [
       {
         "id": "favourite_subjects",
-        "text_en": "What are your favourite subjects? (Please list 2-3 subjects)",
-        "text_mr": "तुमचे आवडते विषय कोणते? (कृपया 2-3 विषय सूचीबद्ध करा)"
+        "text_en": "What are your favourite subjects? (Please list 2-3 subjects like Physics, Chemistry, Mathematics, Biology, History, Geography, etc.)",
+        "text_mr": "तुमचे आवडते विषय कोणते? (कृपया 2-3 विषय सूचीबद्ध करा जसे की भौतिकशास्त्र, रसायनशास्त्र, गणित, जीवशास्त्र, इतिहास, भूगोल, इ.)"
       },
       {
         "id": "weak_subjects",
-        "text_en": "Which subjects do you find challenging or weak?",
-        "text_mr": "कोणते विषय तुम्हाला आव्हानात्मक किंवा कमकुवत वाटतात?"
+        "text_en": "Which subjects do you find challenging or weak? (Please list 2-3 subjects like Physics, Chemistry, Mathematics, Biology, History, Geography, etc.)",
+        "text_mr": "कोणते विषय तुम्हाला आव्हानात्मक किंवा कमकुवत वाटतात? (कृपया 2-3 विषय सूचीबद्ध करा जसे की भौतिकशास्त्र, रसायनशास्त्र, गणित, जीवशास्त्र, इतिहास, भूगोल, इ.)"
       },
       {
         "id": "marks_range",
-        "text_en": "What is your expected marks range? (e.g., 80-90%, 70-80%, etc.)",
-        "text_mr": "तुमची अपेक्षित गुण श्रेणी काय आहे? (उदा., 80-90%, 70-80%, इ.)"
+        "text_en": "What is your expected marks range? (e.g., 80-90%, 70-80%, 60-70%, etc.)",
+        "text_mr": "तुमची अपेक्षित गुण श्रेणी काय आहे? (उदा., 80-90%, 70-80%, 60-70%, इ.)"
       },
       {
         "id": "interests",
         "text_en": "What are your interests and hobbies? (e.g., reading, sports, music, technology, etc.)",
-        "text_mr": "तुमचे आवडी आणि छंद काय आहेत? (उदा., वाचन, खेळ, संगीत, तंत्रज्ञान, इ.)"
+        "text_mr": "तुमचे आवडी आणि छंद काय आहेत? (उदा., वाचन, खेळ, संगीत, तंत्रज्ञान, कम्प्युटर, इ.)"
       }
     ],
     "stream_specific": {
       "PCM": [
         {
           "id": "math_aptitude",
-          "text_en": "How comfortable are you with advanced mathematics and problem-solving?",
-          "text_mr": "प्रगत गणित आणि समस्या सोडवण्यासाठी तुम्ही किती सोयीस्कर आहात?"
+          "text_en": "How comfortable are you with advanced mathematics and problem-solving?(e.g, Yes, No, etc.)",
+          "text_mr": "प्रगत गणित आणि समस्या सोडवण्यासाठी तुम्ही किती सोयीस्कर आहात?(उदा., हो, नाही, इ.)"
         },
         {
           "id": "engineering_interest",
-          "text_en": "Are you interested in engineering, technology, or innovation?",
-          "text_mr": "तुम्हाला अभियांत्रिकी, तंत्रज्ञान किंवा नवकल्पनेमध्ये रस आहे का?"
+          "text_en": "Are you interested in engineering, technology, or innovation?(e.g, Yes, No, etc.)",
+          "text_mr": "तुम्हाला अभियांत्रिकी, तंत्रज्ञान किंवा नवकल्पनेमध्ये रस आहे का?(उदा., हो, नाही, इ.)"
         }
       ],
       "PCB": [
         {
           "id": "biology_interest",
-          "text_en": "How interested are you in biology, healthcare, or life sciences?",
-          "text_mr": "जीवशास्त्र, आरोग्यसेवा किंवा जीवन विज्ञानामध्ये तुम्हाला किती रस आहे?"
+          "text_en": "How interested are you in biology, healthcare, or life sciences?(e.g, Yes, No, etc.)",
+          "text_mr": "जीवशास्त्र, आरोग्यसेवा किंवा जीवन विज्ञानामध्ये तुम्हाला किती रस आहे?(उदा., हो, नाही, इ.)"
         },
         {
           "id": "medical_interest",
-          "text_en": "Are you interested in pursuing a career in medicine or healthcare?",
-          "text_mr": "तुम्हाला वैद्यकीय किंवा आरोग्यसेवा क्षेत्रात करिअर करण्यात रस आहे का?"
+          "text_en": "Are you interested in pursuing a career in medicine or healthcare?(e.g, Yes, No, etc.)",
+          "text_mr": "तुम्हाला वैद्यकीय किंवा आरोग्यसेवा क्षेत्रात करिअर करण्यात रस आहे का?(उदा., हो, नाही, इ.)"
         }
       ],
       "Commerce": [
         {
           "id": "business_interest",
-          "text_en": "Are you interested in business, finance, or entrepreneurship?",
-          "text_mr": "तुम्हाला व्यवसाय, वित्त किंवा उद्योजकतेमध्ये रस आहे का?"
+          "text_en": "Are you interested in business, finance, or entrepreneurship?(e.g, Yes, No, etc.)",
+          "text_mr": "तुम्हाला व्यवसाय, वित्त किंवा उद्योजकतेमध्ये रस आहे का?(उदा., हो, नाही, इ.)"
         },
         {
           "id": "accounting_aptitude",
-          "text_en": "How comfortable are you with numbers, accounting, and financial calculations?",
-          "text_mr": "संख्या, लेखा आणि आर्थिक गणनांसाठी तुम्ही किती सोयीस्कर आहात?"
+          "text_en": "How comfortable are you with numbers, accounting, and financial calculations?(e.g, Yes, No, etc.)",
+          "text_mr": "संख्या, लेखा आणि आर्थिक गणनांसाठी तुम्ही किती सोयीस्कर आहात?(उदा., हो, नाही, इ.)"
         }
       ],
       "Arts": [
         {
           "id": "creativity",
-          "text_en": "How would you rate your creativity and interest in humanities subjects?",
-          "text_mr": "तुम्ही तुमची सर्जनशीलता आणि मानवतावादी विषयांमध्ये रस कसा मोजाल?"
+          "text_en": "How would you rate your creativity and interest in humanities subjects?(e.g, 7/10, 8/10, etc.)",
+          "text_mr": "तुम्ही तुमची सर्जनशीलता आणि मानवतावादी विषयांमध्ये रस कसा मोजाल?(उदा., 7/10, 8/10, इ.)"
         },
         {
           "id": "communication",
-          "text_en": "How strong are your communication and writing skills?",
-          "text_mr": "तुमची संप्रेषण आणि लेखन कौशल्ये किती मजबूत आहेत?"
+          "text_en": "How strong are your communication and writing skills? (e.g., 7/10, 8/10, etc.)",
+          "text_mr": "तुमची संप्रेषण आणि लेखन कौशल्ये किती मजबूत आहेत? (उदा., 7/10, 8/10, इ.)"
         }
       ],
       "Vocational": [
         {
           "id": "practical_skills",
-          "text_en": "What practical skills or trades interest you?",
-          "text_mr": "कोणती व्यावहारिक कौशल्ये किंवा व्यापार तुम्हाला आकर्षित करतात?"
+          "text_en": "What practical skills or trades interest you? (e.g., carpentry, plumbing, welding, etc.)  ",
+          "text_mr": "कोणती व्यावहारिक कौशल्ये किंवा व्यापार तुम्हाला आकर्षित करतात?(उदा., जस्ती, पाणी, वेंडिंग, इ.)"
         },
         {
           "id": "certification_interest",
-          "text_en": "Are you interested in skill-based certifications and hands-on work?",
-          "text_mr": "तुम्हाला कौशल्य-आधारित प्रमाणपत्रे आणि हाताने काम करण्यात रस आहे का?"
+          "text_en": "Are you interested in skill-based certifications and hands-on work?(e.g, Yes, No, etc.)",
+          "text_mr": "तुम्हाला कौशल्य-आधारित प्रमाणपत्रे आणि हाताने काम करण्यात रस आहे का?(उदा., हो, नाही, इ.)"
         }
       ]
     }
   }
 }
-
