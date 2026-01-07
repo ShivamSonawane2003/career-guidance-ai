@@ -35,7 +35,6 @@ load_dotenv()
 # Configuration - Use environment variables only
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 logger.info(f"Initialized Streamlit app with API_BASE_URL: {API_BASE_URL}")
->>>>>>> d376f0b (Initial commit: Career Guidance AI Agent)
 
 # Page configuration
 st.set_page_config(
