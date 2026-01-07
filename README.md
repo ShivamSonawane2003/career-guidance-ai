@@ -2,6 +2,10 @@
 
 > An intelligent, bilingual career guidance system that helps Indian 12th-grade students discover the perfect career path based on their academic stream and interests.
 
+# Demo Link of AI Agent 
+
+## https://career-guidance-ai-12th-grad-student.streamlit.app/
+
 ## What is This?
 
 This is an AI-powered career guidance assistant that talks to students in **Marathi or English** (automatically detects your language!) and helps them find the right career options. It's designed specifically for Indian students who have just completed or are about to complete their 12th grade.
@@ -15,8 +19,7 @@ This is an AI-powered career guidance assistant that talks to students in **Mara
 - **Accurate**: Uses smart rules to ensure you never get wrong career suggestions
 - **Easy to Use**: Beautiful web interface that works on any device
 
-##  Who Is This For?
-
+## Who Is This For?
 - **12th-grade students** in India who are confused about their career path
 - **Parents** who want to help their children make informed decisions
 - **Teachers and counselors** who want to provide additional guidance to students
@@ -193,7 +196,6 @@ career_guidance_ai/
 Want to share this with others? We have detailed guides:
 
 - **[DEPLOYMENT.md](DEPLOYMENT.md)**: Deploy to Streamlit Cloud (easiest, free)
-- **[DEPLOYMENT_UBUNTU.md](DEPLOYMENT_UBUNTU.md)**: Deploy on your own server (more control)
 
 ## Technical Details (For Developers)
 
