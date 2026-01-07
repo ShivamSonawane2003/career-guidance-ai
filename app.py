@@ -222,7 +222,7 @@ def main():
                     st.error(" Backend Error")
         except:
             st.error(" Backend Offline")
-                    logger.debug("Backend health check passed")
+                logger.debug("Backend health check passed")
                     st.success("✅ Backend Connected")
                 else:
                     logger.warning(f"Backend health check returned status {response.status_code}")
