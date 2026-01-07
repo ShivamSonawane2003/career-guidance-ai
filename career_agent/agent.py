@@ -32,6 +32,7 @@ class CareerGuidanceAgent:
         self.phase = self.PHASE_WELCOME
         self.current_question_index = 0
         self.language = "en"
+        self.language_manually_set = False  # Track if language was manually set
         
         # Load questions - handle path correctly
         data_file = os.path.join(os.path.dirname(__file__), "data.json")
@@ -40,8 +41,25 @@ class CareerGuidanceAgent:
     
     def _get_question_text(self, question: Dict) -> str:
         """Get question text in current language."""
+        if not question:
+            logger.error("Question is None or empty")
+            return self._get_welcome_message()
+        
         key = "text_mr" if self.language == "mr" else "text_en"
-        return question.get(key, question.get("text_en", ""))
+        text = question.get(key, "")
+        
+        # Fallback to English if Marathi not found
+        if not text and self.language == "mr":
+            logger.warning(f"Marathi text not found for question {question.get('id', 'unknown')}, falling back to English")
+            text = question.get("text_en", "")
+        
+        # Final fallback
+        if not text:
+            logger.error(f"No text found for question {question.get('id', 'unknown')} in language {self.language}")
+            text = "Question not available" if self.language == "en" else "प्रश्न उपलब्ध नाही"
+        
+        logger.debug(f"Getting question text in language '{self.language}', key '{key}', question_id: {question.get('id', 'unknown')}, text_length: {len(text)}")
+        return text
     
     def _detect_language(self, text: str):
         """Detect and set language from first user input."""
@@ -51,6 +69,16 @@ class CareerGuidanceAgent:
             self.language = detected
             self.profile.set_language(detected)
             logger.info(f"Language detected and set: {self.language}")
+    
+    def set_language(self, language: str):
+        """Manually set language preference."""
+        if language in ["en", "mr"]:
+            self.language = language
+            self.profile.set_language(language)
+            self.language_manually_set = True  # Mark as manually set
+            logger.info(f"Language manually set to: {self.language}")
+        else:
+            logger.warning(f"Invalid language code: {language}, keeping current language: {self.language}")
     
     def _get_welcome_message(self) -> str:
         """Get welcome message in current language."""
@@ -425,18 +453,31 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
         
         user_input = user_input.strip()
         
-        # Detect language on first input
-        if self.phase == self.PHASE_WELCOME or self.current_question_index == 0:
-            self._detect_language(user_input)
-        
-        # Phase: Welcome
+        # Phase: Welcome - handle before language detection
         if self.phase == self.PHASE_WELCOME:
+            # Detect language on first input ONLY if not manually set
+            if not self.language_manually_set:
+                self._detect_language(user_input)
+            
+            # Move to next phase and return first question in current language
             self.phase = self.PHASE_GENERAL_QUESTIONS
             self.current_question_index = 0
             question = self._get_next_general_question()
+            logger.debug(f"Welcome phase: language={self.language}, question={question.get('id', 'None') if question else 'None'}")
             if question:
-                return self._get_question_text(question), False
+                question_text = self._get_question_text(question)
+                if not question_text or question_text.strip() == "":
+                    logger.error(f"Question text is empty for question {question.get('id', 'unknown')} in language {self.language}")
+                    # Fallback to welcome message
+                    return self._get_welcome_message(), False
+                logger.info(f"Returning first question in language '{self.language}': {question_text[:50]}...")
+                return question_text, False
+            logger.warning("No question found, returning welcome message")
             return self._get_welcome_message(), False
+        
+        # Detect language on first input ONLY if not manually set (for other phases)
+        if not self.language_manually_set and self.current_question_index == 0:
+            self._detect_language(user_input)
         
         # Phase: General Questions
         if self.phase == self.PHASE_GENERAL_QUESTIONS:
@@ -590,16 +631,19 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
     
     def reset(self):
         """Reset agent state completely."""
+        current_language = self.language  # Preserve language
+        language_was_set = self.language_manually_set  # Preserve manual set flag
         self.profile.reset()
         self.llm.clear_history()
         self.phase = self.PHASE_WELCOME
         self.current_question_index = 0
-        self.language = "en"
+        self.language = current_language  # Restore language
+        self.language_manually_set = language_was_set  # Restore flag
         if hasattr(self, 'detected_stream'):
             delattr(self, 'detected_stream')
         if hasattr(self, 'stream_questions'):
             delattr(self, 'stream_questions')
-        logger.info("Agent reset complete")
+        logger.info(f"Agent reset complete (language preserved: {self.language})")
     
     def get_current_phase(self) -> str:
         """Get current conversation phase."""

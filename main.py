@@ -55,6 +55,7 @@ agents = {}
 class ChatRequest(BaseModel):
     message: str
     session_id: Optional[str] = None
+    language: Optional[str] = None  # Optional language preference: "en" or "mr"
 
 
 class ChatResponse(BaseModel):
@@ -128,9 +129,17 @@ async def chat(request: ChatRequest):
             )
         
         agent = get_agent(session_id)
-        logger.debug(f"Agent retrieved for session {session_id}, current phase: {agent.get_current_phase()}")
+        logger.debug(f"Agent retrieved for session {session_id}, current phase: {agent.get_current_phase()}, current language: {agent.language}")
+        
+        # Set language preference if provided (MUST be before process_input)
+        if request.language:
+            agent.set_language(request.language)
+            logger.info(f"Language preference set to: {request.language} for session {session_id} (was: {agent.language})")
+        else:
+            logger.debug(f"No language preference provided, using agent's current language: {agent.language}")
         
         response, is_complete = agent.process_input(user_input)
+        logger.debug(f"Response generated in language: {agent.language}")
         logger.info(f"Response generated for session {session_id} (complete: {is_complete}, response length: {len(response)})")
         
         return ChatResponse(
