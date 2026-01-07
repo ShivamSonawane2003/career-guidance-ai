@@ -13,8 +13,9 @@ build/
 .env
 .env.local
 *.log
+streamlit_app.log
+fastapi_backend.log
 .DS_Store
 .vscode/
 .idea/
-.streamlit/secrets.toml
 

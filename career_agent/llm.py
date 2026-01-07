@@ -82,8 +82,10 @@ class LLMProvider:
     def _call_gemini(self, prompt: str, system_prompt: Optional[str] = None) -> str:
         """Call Gemini API."""
         try:
+            logger.debug(f"Calling Gemini API with prompt length: {len(prompt)}")
             messages = self.conversation_history.copy()
             if system_prompt:
+                logger.debug(f"Adding system prompt (length: {len(system_prompt)})")
                 # Add system prompt as first message
                 if HumanMessage != object:
                     messages.insert(0, HumanMessage(content=system_prompt))
@@ -94,8 +96,10 @@ class LLMProvider:
             else:
                 messages.append({"role": "user", "content": prompt})
             
+            logger.debug(f"Invoking Gemini with {len(messages)} messages")
             response = self.gemini_llm.invoke(messages)
             response_text = response.content
+            logger.info(f"Gemini API call successful, response length: {len(response_text)}")
             
             # Update conversation history
             if HumanMessage != object:
@@ -108,15 +112,18 @@ class LLMProvider:
             
             return response_text
         except Exception as e:
-            logger.error(f"Gemini API call failed: {e}")
+            logger.error(f"Gemini API call failed: {e}", exc_info=True)
             raise
     
     def _call_ollama(self, prompt: str, system_prompt: Optional[str] = None) -> str:
         """Call Ollama API as fallback."""
         try:
+            logger.debug(f"Calling Ollama API with prompt length: {len(prompt)}")
             messages = self._convert_to_ollama_messages(self.conversation_history)
+            logger.debug(f"Converted {len(messages)} messages to Ollama format")
             
             if system_prompt:
+                logger.debug(f"Adding system prompt to Ollama messages (length: {len(system_prompt)})")
                 # Ollama doesn't have explicit system messages, prepend to first user message
                 if messages and messages[0]["role"] == "user":
                     messages[0]["content"] = f"{system_prompt}\n\n{messages[0]['content']}"
@@ -125,6 +132,7 @@ class LLMProvider:
             
             messages.append({"role": "user", "content": prompt})
             
+            logger.debug(f"Calling Ollama model '{self.ollama_model}' with {len(messages)} messages")
             response = ollama.chat(
                 model=self.ollama_model,
                 messages=messages,
@@ -132,6 +140,7 @@ class LLMProvider:
             )
             
             response_text = response["message"]["content"]
+            logger.info(f"Ollama API call successful, response length: {len(response_text)}")
             
             # Update conversation history
             if HumanMessage != object:
@@ -144,7 +153,7 @@ class LLMProvider:
             
             return response_text
         except Exception as e:
-            logger.error(f"Ollama API call failed: {e}")
+            logger.error(f"Ollama API call failed: {e}", exc_info=True)
             raise
     
     def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
@@ -152,14 +161,18 @@ class LLMProvider:
         Generate response with automatic fallback.
         Maintains conversation state across fallback.
         """
+        logger.debug(f"Generating response (use_gemini: {self.use_gemini})")
         if self.use_gemini:
             try:
+                logger.info("Attempting Gemini API call")
                 return self._call_gemini(prompt, system_prompt)
             except Exception as e:
-                logger.warning(f"Falling back to Ollama: {e}")
+                logger.warning(f"Gemini API failed, falling back to Ollama: {e}")
                 self.use_gemini = False
+                logger.info("Switching to Ollama for future requests")
                 return self._call_ollama(prompt, system_prompt)
         else:
+            logger.info("Using Ollama (Gemini not available or disabled)")
             return self._call_ollama(prompt, system_prompt)
     
     def clear_history(self):

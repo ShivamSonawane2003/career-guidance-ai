@@ -659,9 +659,14 @@ Once the backend is running, visit:
 
 ## 🚀 Deployment
 
-### Quick Deployment Guide
+### Deployment Options
 
-For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)
+We provide deployment guides for multiple platforms:
+
+1. **[DEPLOYMENT.md](DEPLOYMENT.md)**: Deploy to Streamlit Cloud with GitHub (Cloud-based, easiest)
+2. **[DEPLOYMENT_UBUNTU.md](DEPLOYMENT_UBUNTU.md)**: Deploy on Ubuntu Server with Nginx (Self-hosted, full control)
+
+### Quick Deployment (Streamlit Cloud)
 
 **Quick Steps**:
 1. Push code to GitHub
@@ -670,6 +675,18 @@ For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)
 4. Configure secrets and environment variables
 
 **See [DEPLOYMENT.md](DEPLOYMENT.md) for complete step-by-step guide.**
+
+### Self-Hosted Deployment (Ubuntu + Nginx)
+
+**Quick Steps**:
+1. Setup Ubuntu server
+2. Install dependencies (Python, Nginx)
+3. Clone repository and setup virtual environment
+4. Configure systemd services for backend and frontend
+5. Configure Nginx as reverse proxy
+6. Setup SSL certificates (optional)
+
+**See [DEPLOYMENT_UBUNTU.md](DEPLOYMENT_UBUNTU.md) for complete step-by-step guide.**
 
 ## 📝 License
 

@@ -56,6 +56,7 @@ class StreamDetector:
         Returns stream code or None if ambiguous.
         """
         text = f"{favourite_subjects} {weak_subjects} {interests}".lower()
+        logger.debug(f"Detecting stream from text: {text[:100]}...")
         
         stream_scores = {stream: 0 for stream in StreamDetector.STREAM_KEYWORDS.keys()}
         
@@ -64,18 +65,24 @@ class StreamDetector:
                 for keyword in keywords[lang]:
                     if keyword in text:
                         stream_scores[stream] += 1
+                        logger.debug(f"Match found: '{keyword}' -> {stream} (score: {stream_scores[stream]})")
         
         # Find stream with highest score
         max_score = max(stream_scores.values())
+        logger.debug(f"Stream detection scores: {stream_scores}, max_score: {max_score}")
+        
         if max_score == 0:
+            logger.warning("No stream keywords matched, returning None")
             return None
         
         detected_stream = max(stream_scores, key=stream_scores.get)
         
         # Require minimum confidence
         if max_score >= 2:
+            logger.info(f"Stream detected: {detected_stream} (confidence score: {max_score})")
             return detected_stream
         
+        logger.warning(f"Stream detection confidence too low (score: {max_score} < 2), returning None")
         return None
     
     @staticmethod
@@ -85,15 +92,20 @@ class StreamDetector:
         Validate that career recommendation aligns with student stream.
         CRITICAL: Prevents cross-stream recommendations.
         """
+        logger.debug(f"Validating stream alignment: career='{career_name}', stream='{student_stream}'")
+        
         if student_stream not in career_data["streams"]:
+            logger.warning(f"Invalid stream '{student_stream}' not found in career data")
             return False
         
         stream_careers = [c["name"].lower() for c in career_data["streams"][student_stream]["careers"]]
         career_lower = career_name.lower()
+        logger.debug(f"Stream '{student_stream}' has {len(stream_careers)} valid careers")
         
         # Check if career exists in stream's career list
         for stream_career in stream_careers:
             if stream_career in career_lower or career_lower in stream_career:
+                logger.info(f"Career '{career_name}' validated for stream '{student_stream}' (matched: '{stream_career}')")
                 return True
         
         # Additional validation: Check for forbidden cross-stream patterns
@@ -108,10 +120,11 @@ class StreamDetector:
         if student_stream in forbidden_patterns:
             for pattern in forbidden_patterns[student_stream]:
                 if pattern in career_lower:
-                    logger.warning(f"Blocked cross-stream recommendation: {career_name} for {student_stream}")
+                    logger.warning(f"Blocked cross-stream recommendation: '{career_name}' for stream '{student_stream}' (forbidden pattern: '{pattern}')")
                     return False
         
-        return True
+        logger.warning(f"Career '{career_name}' not found in stream '{student_stream}' careers list and no forbidden pattern matched")
+        return False
 
 
 class CareerRecommender:
@@ -135,14 +148,18 @@ class CareerRecommender:
         Filter careers based on student profile.
         Rule-based filtering ensures stream alignment.
         """
+        logger.info(f"Filtering careers for stream: {stream}")
         careers = self.get_stream_careers(stream)
+        logger.debug(f"Found {len(careers)} careers for stream {stream}")
         if not careers:
+            logger.warning(f"No careers found for stream: {stream}")
             return []
         
         # Apply filters based on profile
         filtered = []
         
         for career in careers:
+            logger.debug(f"Scoring career: {career['name']}")
             score = 0
             
             # Match based on interests
@@ -195,16 +212,20 @@ class CareerRecommender:
                         score += 1.5
             
             filtered.append((career, score))
+            logger.debug(f"Career '{career['name']}' scored: {score}")
         
         # Sort by score and return top 3
         filtered.sort(key=lambda x: x[1], reverse=True)
+        logger.debug(f"Sorted careers by score: {[(c['name'], s) for c, s in filtered[:5]]}")
         top_careers = [career for career, score in filtered[:3]]
         
         # If we have less than 3, fill with remaining careers
         if len(top_careers) < 3:
             remaining = [c for c in careers if c not in top_careers]
+            logger.debug(f"Filling remaining slots: {len(remaining)} careers available")
             top_careers.extend(remaining[:3 - len(top_careers)])
         
+        logger.info(f"Filtered to {len(top_careers)} careers: {[c['name'] for c in top_careers]}")
         return top_careers[:3]
     
     def format_recommendation(self, career: Dict, stream: str, language: str = "en") -> Dict:

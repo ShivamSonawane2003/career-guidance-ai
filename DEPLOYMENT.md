@@ -153,46 +153,32 @@ Since Streamlit Cloud only hosts the frontend, you need to deploy the FastAPI ba
 5. **App URL**: Choose a custom subdomain (optional)
 6. Click **"Deploy"**
 
-#### 4.3 Configure Secrets (Environment Variables)
+#### 4.3 Configure Environment Variables
 
 1. In Streamlit Cloud, go to your app settings
-2. Click **"Secrets"** or **"Settings" → "Secrets"**
-3. Add the following secrets:
+2. Click **"⚙️ Settings" → "Secrets"**
+3. In the secrets editor, add the following (these will be available as environment variables):
 
 ```toml
-# .streamlit/secrets.toml (in Streamlit Cloud UI)
-GEMINI_API_KEY = "your_gemini_api_key_here"
-GEMINI_MODEL = "gemini-2.5-flash"
-API_BASE_URL = "https://your-backend-url.railway.app"  # Your backend URL from Step 3
+API_BASE_URL = "https://your-backend-url.railway.app"
 ```
 
-**Important**: 
+**Important Notes**: 
 - Replace `your-backend-url.railway.app` with your actual backend URL
+- The backend will handle `GEMINI_API_KEY` - you don't need to set it in Streamlit Cloud
+- Streamlit Cloud automatically makes these available as environment variables
+- The app uses `os.getenv()` to read these - no secrets.toml file needed
 - Never commit secrets to GitHub!
 
-### Step 5: Update Frontend Code for Production
+### Step 5: Verify Configuration
 
-#### 5.1 Update `app.py` to Use Streamlit Secrets
+The `app.py` file already uses environment variables via `os.getenv()`. Streamlit Cloud will automatically make the secrets you configure available as environment variables.
 
-Modify the beginning of `app.py`:
+**No code changes needed!** The application will automatically:
+- Use environment variables from Streamlit Cloud Secrets UI
+- Fall back to `.env` file for local development
 
-```python
-# Configuration
-import streamlit as st
-
-# Try to get from secrets (Streamlit Cloud) or env (local)
-if hasattr(st, 'secrets') and 'API_BASE_URL' in st.secrets:
-    API_BASE_URL = st.secrets['API_BASE_URL']
-    GEMINI_API_KEY = st.secrets.get('GEMINI_API_KEY')
-else:
-    import os
-    from dotenv import load_dotenv
-    load_dotenv()
-    API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-```
-
-#### 5.2 Commit and Push Changes
+#### 5.1 Commit and Push Changes (if any)
 
 ```bash
 git add app.py
@@ -256,7 +242,7 @@ gatherUsageStats = false
 ### 1. Never Commit Secrets
 
 - ✅ Add `.env` to `.gitignore`
-- ✅ Use Streamlit Cloud Secrets for frontend
+- ✅ Use Streamlit Cloud environment variables (via Secrets UI) for frontend
 - ✅ Use platform environment variables for backend
 - ❌ Never commit API keys to GitHub
 
@@ -300,7 +286,7 @@ async def chat(request: Request, chat_request: ChatRequest):
 - [ ] Backend deployed (Railway/Render/Heroku)
 - [ ] Backend URL obtained and tested
 - [ ] Frontend deployed to Streamlit Cloud
-- [ ] Secrets configured in Streamlit Cloud
+- [ ] Environment variables configured in Streamlit Cloud (via Secrets UI)
 - [ ] API_BASE_URL updated in frontend code
 - [ ] CORS configured for production
 - [ ] Both services tested and working
@@ -310,7 +296,7 @@ async def chat(request: Request, chat_request: ChatRequest):
 
 ### Frontend Can't Connect to Backend
 
-1. **Check Backend URL**: Verify it's correct in Streamlit secrets
+1. **Check Backend URL**: Verify it's correct in Streamlit Cloud Secrets UI
 2. **Check CORS**: Ensure backend allows your Streamlit Cloud URL
 3. **Check Backend Status**: Visit backend `/health` endpoint
 4. **Check Logs**: View Streamlit Cloud logs for errors
@@ -326,7 +312,7 @@ async def chat(request: Request, chat_request: ChatRequest):
 
 1. **Verify Key**: Check if API key is correct
 2. **Check Quota**: Verify Gemini API quota not exceeded
-3. **Check Secrets**: Ensure secrets are set correctly in Streamlit Cloud
+3. **Check Environment Variables**: Ensure API_BASE_URL is set correctly in Streamlit Cloud Secrets UI
 
 ## 🔄 Continuous Deployment
 

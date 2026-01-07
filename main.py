@@ -16,7 +16,11 @@ import uuid
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('fastapi_backend.log'),
+        logging.StreamHandler()
+    ]
 )
 logger = logging.getLogger(__name__)
 
@@ -72,14 +76,18 @@ class RestartResponse(BaseModel):
 def get_agent(session_id: str) -> CareerGuidanceAgent:
     """Get or create agent for session."""
     if session_id not in agents:
+        logger.info(f"Creating new agent for session: {session_id}")
         agents[session_id] = CareerGuidanceAgent()
-        logger.info(f"Created new agent for session: {session_id}")
+        logger.info(f"Agent created successfully for session: {session_id}")
+    else:
+        logger.debug(f"Retrieved existing agent for session: {session_id}")
     return agents[session_id]
 
 
 @app.get("/")
 async def root():
     """Root endpoint."""
+    logger.debug("Root endpoint accessed")
     return {
         "message": "Career Guidance AI API",
         "version": "1.0.0",
@@ -90,6 +98,7 @@ async def root():
 @app.get("/health")
 async def health():
     """Health check endpoint."""
+    logger.debug("Health check endpoint accessed")
     return {"status": "healthy", "service": "career-guidance-agent"}
 
 
@@ -103,19 +112,26 @@ async def chat(request: ChatRequest):
         # Generate session ID if not provided
         if not request.session_id:
             session_id = str(uuid.uuid4())
+            logger.info(f"New session created: {session_id}")
         else:
             session_id = request.session_id
+            logger.debug(f"Existing session: {session_id}")
         
         user_input = request.message.strip()
+        logger.info(f"Processing message for session {session_id}: {user_input[:100]}...")
         
         if not user_input:
+            logger.warning(f"Empty message received for session {session_id}")
             raise HTTPException(
                 status_code=400,
                 detail="Please provide a valid message."
             )
         
         agent = get_agent(session_id)
+        logger.debug(f"Agent retrieved for session {session_id}, current phase: {agent.get_current_phase()}")
+        
         response, is_complete = agent.process_input(user_input)
+        logger.info(f"Response generated for session {session_id} (complete: {is_complete}, response length: {len(response)})")
         
         return ChatResponse(
             response=response,
@@ -124,8 +140,10 @@ async def chat(request: ChatRequest):
             error=False
         )
     
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"Error in chat endpoint: {e}", exc_info=True)
+        logger.error(f"Error in chat endpoint for session {request.session_id}: {e}", exc_info=True)
         raise HTTPException(
             status_code=500,
             detail="An error occurred. Please try again."
@@ -137,10 +155,13 @@ async def restart(request: RestartRequest):
     """Reset conversation and start fresh."""
     try:
         session_id = request.session_id
+        logger.info(f"Restart requested for session: {session_id}")
         
         if session_id in agents:
             agents[session_id].reset()
-            logger.info(f"Reset agent for session: {session_id}")
+            logger.info(f"Agent reset for session: {session_id}")
+        else:
+            logger.warning(f"Restart requested for non-existent session: {session_id}")
         
         return RestartResponse(
             success=True,
@@ -148,7 +169,7 @@ async def restart(request: RestartRequest):
         )
     
     except Exception as e:
-        logger.error(f"Error in restart endpoint: {e}", exc_info=True)
+        logger.error(f"Error in restart endpoint for session {request.session_id}: {e}", exc_info=True)
         raise HTTPException(
             status_code=500,
             detail="Error resetting conversation."
