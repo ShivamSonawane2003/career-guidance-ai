@@ -9,15 +9,6 @@ import os
 import logging
 from dotenv import load_dotenv
 
-# Configuration - Support both Streamlit Cloud secrets and local .env
-if hasattr(st, 'secrets') and 'API_BASE_URL' in st.secrets:
-    # Streamlit Cloud deployment
-    API_BASE_URL = st.secrets['API_BASE_URL']
-else:
-    # Local development
-    load_dotenv()
-    API_BASE_URL = os.getenv("API_BASE_URL", "https://career-guidance-ai-xo2g.onrender.com")
-
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -33,13 +24,14 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 # Configuration - Use environment variables only
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+# Streamlit Cloud exposes secrets as environment variables
+API_BASE_URL = os.getenv("API_BASE_URL", "https://career-guidance-ai-xo2g.onrender.com")
 logger.info(f"Initialized Streamlit app with API_BASE_URL: {API_BASE_URL}")
 
 # Page configuration
 st.set_page_config(
     page_title="Career Guidance AI",
-    page_icon="",
+    page_icon="🎓",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -193,7 +185,7 @@ def main():
     # Sidebar
     with st.sidebar:
         st.markdown("### Controls")
-        if st.button(" Restart Conversation", key="restart", use_container_width=True):
+        if st.button("🔄 Restart Conversation", key="restart", use_container_width=True):
             reset_conversation()
             st.rerun()
         
@@ -217,23 +209,18 @@ def main():
             with httpx.Client() as client:
                 response = client.get(f"{API_BASE_URL}/health", timeout=5.0)
                 if response.status_code == 200:
-                    st.success("Backend Connected")
-                else:
-                    st.error(" Backend Error")
-        except:
-            st.error(" Backend Offline")
-                logger.debug("Backend health check passed")
+                    logger.debug("Backend health check passed")
                     st.success("✅ Backend Connected")
                 else:
                     logger.warning(f"Backend health check returned status {response.status_code}")
-                    st.error(" Backend Error")
+                    st.error("❌ Backend Error")
         except httpx.ConnectError as e:
             logger.error(f"Backend health check failed - connection error: {e}")
-            st.error(" Backend Offline")
+            st.error("❌ Backend Offline")
             st.info(f"Expected at: {API_BASE_URL}")
         except Exception as e:
             logger.error(f"Backend health check failed - unexpected error: {e}", exc_info=True)
-            st.error(" Backend Offline")
+            st.error("❌ Backend Offline")
             st.info(f"Expected at: {API_BASE_URL}")
     
     # Display chat messages
