@@ -219,7 +219,6 @@ def main():
             with httpx.Client() as client:
                 response = client.get(f"{API_BASE_URL}/health", timeout=5.0)
                 if response.status_code == 200:
-<<<<<<< HEAD
                     st.success("Backend Connected")
                 else:
                     st.error(" Backend Error")
@@ -238,7 +237,6 @@ def main():
         except Exception as e:
             logger.error(f"Backend health check failed - unexpected error: {e}", exc_info=True)
             st.error("❌ Backend Offline")
->>>>>>> d376f0b (Initial commit: Career Guidance AI Agent)
             st.info(f"Expected at: {API_BASE_URL}")
     
     # Display chat messages
