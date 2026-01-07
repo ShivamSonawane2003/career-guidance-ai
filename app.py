@@ -9,7 +9,6 @@ import os
 import logging
 from dotenv import load_dotenv
 
-<<<<<<< HEAD
 # Configuration - Support both Streamlit Cloud secrets and local .env
 if hasattr(st, 'secrets') and 'API_BASE_URL' in st.secrets:
     # Streamlit Cloud deployment
@@ -18,7 +17,7 @@ else:
     # Local development
     load_dotenv()
     API_BASE_URL = os.getenv("API_BASE_URL", "https://career-guidance-ai-xo2g.onrender.com")
-=======
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -41,7 +40,7 @@ logger.info(f"Initialized Streamlit app with API_BASE_URL: {API_BASE_URL}")
 # Page configuration
 st.set_page_config(
     page_title="Career Guidance AI",
-    page_icon="🎓",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -195,7 +194,7 @@ def main():
     # Sidebar
     with st.sidebar:
         st.markdown("### Controls")
-        if st.button("🔄 Restart Conversation", key="restart", use_container_width=True):
+        if st.button(" Restart Conversation", key="restart", use_container_width=True):
             reset_conversation()
             st.rerun()
         
@@ -229,14 +228,14 @@ def main():
                     st.success("✅ Backend Connected")
                 else:
                     logger.warning(f"Backend health check returned status {response.status_code}")
-                    st.error("❌ Backend Error")
+                    st.error(" Backend Error")
         except httpx.ConnectError as e:
             logger.error(f"Backend health check failed - connection error: {e}")
-            st.error("❌ Backend Offline")
+            st.error(" Backend Offline")
             st.info(f"Expected at: {API_BASE_URL}")
         except Exception as e:
             logger.error(f"Backend health check failed - unexpected error: {e}", exc_info=True)
-            st.error("❌ Backend Offline")
+            st.error(" Backend Offline")
             st.info(f"Expected at: {API_BASE_URL}")
     
     # Display chat messages
