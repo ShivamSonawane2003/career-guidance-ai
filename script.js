@@ -954,13 +954,32 @@ function initializeRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     recognition = new SpeechRecognition();
     recognition.continuous = false;
-    recognition.interimResults = false;
+    recognition.interimResults = true; // Enable real-time transcription
     recognition.lang = state.currentLanguage === 'mr' ? 'mr-IN' : 'en-IN';
     
     recognition.onresult = (event) => {
-        if (event.results && event.results.length > 0 && event.results[0].length > 0) {
-            const transcript = event.results[0][0].transcript;
-            elements.messageInput.value = transcript;
+        let interimTranscript = '';
+        let finalTranscript = '';
+        
+        // Process all results
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+                finalTranscript += transcript;
+            } else {
+                interimTranscript += transcript;
+            }
+        }
+        
+        // Show interim results in real-time
+        if (interimTranscript) {
+            elements.messageInput.value = finalTranscript + interimTranscript;
+        } else if (finalTranscript) {
+            elements.messageInput.value = finalTranscript;
+        }
+        
+        // If we have a final result, send the message
+        if (finalTranscript) {
             stopRecording();
             handleSendMessage();
         }
@@ -1024,8 +1043,12 @@ function startRecording() {
         recognition.lang = state.currentLanguage === 'mr' ? 'mr-IN' : 'en-IN';
         recognition.start();
         isRecording = true;
+        // Transform mic icon to cancel button
+        elements.micBtn.innerHTML = '✕';
         elements.micBtn.classList.add('recording');
         elements.micBtn.title = 'Stop recording';
+        // Clear input to show new transcription
+        elements.messageInput.value = '';
     } catch (error) {
         console.error('Error starting recognition:', error);
         // If start fails, reinitialize and try again once
@@ -1034,8 +1057,10 @@ function startRecording() {
             try {
                 recognition.start();
                 isRecording = true;
+                elements.micBtn.innerHTML = '✕';
                 elements.micBtn.classList.add('recording');
                 elements.micBtn.title = 'Stop recording';
+                elements.messageInput.value = '';
             } catch (retryError) {
                 console.error('Error on retry:', retryError);
                 stopRecording();
@@ -1048,9 +1073,16 @@ function startRecording() {
 
 function stopRecording() {
     if (recognition && isRecording) {
-        recognition.stop();
+        try {
+            recognition.stop();
+        } catch (error) {
+            // Ignore errors when stopping
+            console.log('Error stopping recognition:', error);
+        }
     }
     isRecording = false;
+    // Transform cancel button back to mic icon
+    elements.micBtn.innerHTML = '🎤';
     elements.micBtn.classList.remove('recording');
     elements.micBtn.title = 'Voice Input (if supported)';
 }
