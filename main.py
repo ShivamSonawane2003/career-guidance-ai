@@ -93,6 +93,7 @@ else:
         raise ValueError(error_msg)
     
     allowed_origins = [
+        "https://shivamsonawane2003.github.io"
         "http://localhost:8501",
         "http://localhost:8502", 
         "http://localhost:3000",
