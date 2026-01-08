@@ -7,7 +7,7 @@
 // ============================================
 // Update API_BASE_URL if your backend runs on a different port or domain
 const CONFIG = {
-    API_BASE_URL: 'http://localhost:8000',  // Change this if backend is on different URL
+    API_BASE_URL: 'https://career-guidance-ai-xo2g.onrender.com',  // Change this if backend is on different URL
     MAX_CHAT_HISTORY: 10,                     // Maximum number of chat sessions to store
     STORAGE_KEY_CHATS: 'career_guidance_chats',  // localStorage key for chat history
     STORAGE_KEY_CURRENT: 'career_guidance_current_session'  // localStorage key for current session
@@ -405,6 +405,12 @@ function loadChatSession(sessionId) {
         const title = generateChatTitle();
         addToChatHistory(state.currentSessionId, title);
     }
+    
+    // Move selected chat to top of list
+    state.chatHistory = state.chatHistory.filter(c => c.sessionId !== sessionId);
+    chat.timestamp = new Date().toISOString();
+    state.chatHistory.unshift(chat);
+    saveChatHistory();
     
     // Load from chat history first (has full message history)
     if (chat.messages && chat.messages.length > 0) {
@@ -937,32 +943,55 @@ let isRecording = false;
 
 function checkAudioSupport() {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = state.currentLanguage === 'mr' ? 'mr-IN' : 'en-IN';
-        
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            elements.messageInput.value = transcript;
-            handleSendMessage();
-        };
-        
-        recognition.onerror = (event) => {
-            console.error('Speech recognition error:', event.error);
-            stopRecording();
-            alert('Voice input failed. Please type your message instead.');
-        };
-        
-        recognition.onend = () => {
-            stopRecording();
-        };
-        
+        initializeRecognition();
         elements.micBtn.style.display = 'block';
     } else {
         elements.micBtn.style.display = 'none';
     }
+}
+
+function initializeRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = state.currentLanguage === 'mr' ? 'mr-IN' : 'en-IN';
+    
+    recognition.onresult = (event) => {
+        if (event.results && event.results.length > 0 && event.results[0].length > 0) {
+            const transcript = event.results[0][0].transcript;
+            elements.messageInput.value = transcript;
+            stopRecording();
+            handleSendMessage();
+        }
+    };
+    
+    recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        stopRecording();
+        
+        // Don't show alert for recoverable errors
+        if (event.error === 'no-speech') {
+            // User didn't speak, silently fail
+            return;
+        } else if (event.error === 'aborted') {
+            // User or system aborted, silently fail
+            return;
+        } else if (event.error === 'network') {
+            alert('Network error. Please check your connection and try again.');
+        } else if (event.error === 'not-allowed') {
+            alert('Microphone permission denied. Please allow microphone access and try again.');
+        } else {
+            // For other errors, try to reinitialize
+            setTimeout(() => {
+                initializeRecognition();
+            }, 100);
+        }
+    };
+    
+    recognition.onend = () => {
+        stopRecording();
+    };
 }
 
 function handleVoiceInput() {
@@ -979,7 +1008,17 @@ function handleVoiceInput() {
 }
 
 function startRecording() {
-    if (!recognition || state.isProcessing) return;
+    if (state.isProcessing) return;
+    
+    // Reinitialize if recognition is null or in bad state
+    if (!recognition) {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            initializeRecognition();
+        } else {
+            alert('Voice input is not supported in your browser. Please type your message.');
+            return;
+        }
+    }
     
     try {
         recognition.lang = state.currentLanguage === 'mr' ? 'mr-IN' : 'en-IN';
@@ -989,7 +1028,21 @@ function startRecording() {
         elements.micBtn.title = 'Stop recording';
     } catch (error) {
         console.error('Error starting recognition:', error);
-        stopRecording();
+        // If start fails, reinitialize and try again once
+        if (error.name === 'InvalidStateError' || error.message.includes('start')) {
+            initializeRecognition();
+            try {
+                recognition.start();
+                isRecording = true;
+                elements.micBtn.classList.add('recording');
+                elements.micBtn.title = 'Stop recording';
+            } catch (retryError) {
+                console.error('Error on retry:', retryError);
+                stopRecording();
+            }
+        } else {
+            stopRecording();
+        }
     }
 }
 
