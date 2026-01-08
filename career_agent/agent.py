@@ -5,10 +5,10 @@ Enforces one-question-at-a-time rule and manages conversation state.
 
 import json
 import os
+import logging
 from typing import Dict, Optional, List, Tuple
 from career_agent.logic import StreamDetector, CareerRecommender, StudentProfile
 from career_agent.llm import LLMProvider
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +31,7 @@ class CareerGuidanceAgent:
         self.llm = LLMProvider()
         self.phase = self.PHASE_WELCOME
         self.current_question_index = 0
+        self.stream_question_index = 0
         self.language = "en"
         self.language_manually_set = False  # Track if language was manually set
         
@@ -38,9 +39,18 @@ class CareerGuidanceAgent:
         data_file = os.path.join(os.path.dirname(__file__), "data.json")
         with open(data_file, "r", encoding="utf-8") as f:
             self.data = json.load(f)
+        
+        # Calculate total questions dynamically
+        general_count = len(self.data["questions"]["general"])
+        # Get max stream questions (assuming all streams have same count)
+        max_stream_questions = 0
+        for stream_questions in self.data["questions"]["stream_specific"].values():
+            max_stream_questions = max(max_stream_questions, len(stream_questions))
+        self.total_questions = general_count + max_stream_questions
+        logger.info(f"Total questions calculated: {general_count} general + {max_stream_questions} stream-specific = {self.total_questions}")
     
-    def _get_question_text(self, question: Dict) -> str:
-        """Get question text in current language."""
+    def _get_question_text(self, question: Dict, question_number: int = None, total_questions: int = None) -> str:
+        """Get question text in current language, personalized with name if available."""
         if not question:
             logger.error("Question is None or empty")
             return self._get_welcome_message()
@@ -57,6 +67,22 @@ class CareerGuidanceAgent:
         if not text:
             logger.error(f"No text found for question {question.get('id', 'unknown')} in language {self.language}")
             text = "Question not available" if self.language == "en" else "प्रश्न उपलब्ध नाही"
+        
+        # Personalize with name if available (except for name question itself)
+        name = self.profile.get("name", "").strip()
+        if name and question.get("id") != "name":
+            if self.language == "mr":
+                text = f"{name}, {text}"
+            else:
+                text = f"{name}, {text}"
+        
+        # Add question number prefix if provided (format: "1 of 9 question:")
+        if question_number is not None and total_questions is not None:
+            if self.language == "mr":
+                prefix = f"{question_number} पैकी {total_questions} प्रश्न: "
+            else:
+                prefix = f"{question_number} of {total_questions} question: "
+            text = prefix + text
         
         logger.debug(f"Getting question text in language '{self.language}', key '{key}', question_id: {question.get('id', 'unknown')}, text_length: {len(text)}")
         return text
@@ -83,9 +109,9 @@ class CareerGuidanceAgent:
     def _get_welcome_message(self) -> str:
         """Get welcome message in current language."""
         if self.language == "mr":
-            return "नमस्कार! मी तुमचा करिअर मार्गदर्शन सहाय्यक आहे. मी तुम्हाला तुमच्या शैक्षणिक स्ट्रीम आणि आवडींवर आधारित करिअर शिफारसी देण्यात मदत करू. चला सुरू करूया!"
+            return "नमस्कार! 👋 मी तुमचा करिअर मार्गदर्शन सहाय्यक आहे. मी तुम्हाला तुमच्या आवडी आणि शक्तींशी जुळणारे करिअर मार्ग शोधण्यात मदत करू. तुम्हाला चांगल्या प्रकारे ओळखण्यासाठी मी तुम्हाला काही प्रश्न विचारू, आणि नंतर तुमच्यासाठी योग्य असलेल्या करिअर पर्यायांची शिफारस करू. सुरू करण्यासाठी तयार आहात?"
         else:
-            return "Hello! I'm your career guidance assistant. I'll help you discover career options based on your academic stream and interests. Let's begin!"
+            return "Hi there! 👋 I'm here to help you explore career paths that match your interests and strengths. I'll ask you a few questions to get to know you better, and then suggest some career options that might be perfect for you. Ready to get started?"
     
     def _get_next_general_question(self) -> Optional[Dict]:
         """Get next general question."""
@@ -99,12 +125,15 @@ class CareerGuidanceAgent:
         return self.data["questions"]["stream_specific"].get(stream, [])
     
     def _generate_stream_confirmation_prompt(self, detected_stream: str) -> str:
-        """Generate prompt to confirm detected stream."""
+        """Generate prompt to confirm detected stream in a natural way."""
         stream_name = self.data["streams"][detected_stream]["name"]
+        name = self.profile.get("name", "").strip()
+        name_prefix = f"{name}, " if name else ""
+        
         if self.language == "mr":
-            return f"तुमच्या उत्तरांवर आधारित, तुम्ही {stream_name} स्ट्रीममध्ये असल्याचे दिसते. हे बरोबर आहे का? (होय/नाही)"
+            return f"{name_prefix}तुम्ही मला जे सांगितले आहे त्यावरून, मला असे वाटते की तुम्ही {stream_name} स्ट्रीममध्ये असाल. हे बरोबर आहे का? (होय/नाही)"
         else:
-            return f"Based on your answers, it appears you are in the {stream_name} stream. Is this correct? (Yes/No)"
+            return f"{name_prefix}Based on everything you've shared with me, it seems like you might be in the {stream_name} stream. Does that sound right to you? (Yes/No)"
     
     def _generate_recommendations(self) -> List[Dict]:
         """Generate career recommendations using rule-based filtering and Gemini LLM enhancement."""
@@ -465,7 +494,8 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
             question = self._get_next_general_question()
             logger.debug(f"Welcome phase: language={self.language}, question={question.get('id', 'None') if question else 'None'}")
             if question:
-                question_text = self._get_question_text(question)
+                question_number = self.current_question_index + 1
+                question_text = self._get_question_text(question, question_number, self.total_questions)
                 if not question_text or question_text.strip() == "":
                     logger.error(f"Question text is empty for question {question.get('id', 'unknown')} in language {self.language}")
                     # Fallback to welcome message
@@ -493,7 +523,8 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
                 next_question = self._get_next_general_question()
                 if next_question:
                     logger.debug(f"Next general question available: {next_question['id']}")
-                    return self._get_question_text(next_question), False
+                    question_number = self.current_question_index + 1
+                    return self._get_question_text(next_question, question_number, self.total_questions), False
                 else:
                     # All general questions answered, detect stream
                     logger.info("All general questions answered, detecting stream")
@@ -507,14 +538,17 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
                     if detected:
                         logger.info(f"Stream detected: {detected}")
                         self.detected_stream = detected
+                        # Don't add question number to confirmation prompt
                         return self._generate_stream_confirmation_prompt(detected), False
                     else:
                         logger.warning("Stream detection returned None - asking user explicitly")
-                        # Ambiguous, ask explicitly
+                        # Ambiguous, ask explicitly (this is not a numbered question)
+                        name = self.profile.get("name", "").strip()
+                        name_prefix = f"{name}, " if name else ""
                         if self.language == "mr":
-                            return "तुमचा शैक्षणिक स्ट्रीम काय आहे? (PCM/PCB/Commerce/Arts/Vocational)", False
+                            return f"{name_prefix}मला थोडे अधिक माहिती हवी आहे. तुम्ही सध्या कोणत्या शैक्षणिक स्ट्रीममध्ये आहात? (PCM/PCB/Commerce/Arts/Vocational)", False
                         else:
-                            return "What is your academic stream? (PCM/PCB/Commerce/Arts/Vocational)", False
+                            return f"{name_prefix}I'd like to understand better. Which academic stream are you currently in? (PCM/PCB/Commerce/Arts/Vocational)", False
         
         # Phase: Stream Confirmation
         if self.phase == self.PHASE_STREAM_CONFIRMATION:
@@ -530,9 +564,13 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
                         self.profile.set_stream(stream)
                     else:
                         # Should not happen, but handle gracefully
-                        return "कृपया तुमचा स्ट्रीम स्पष्ट करा (PCM/PCB/Commerce/Arts/Vocational)", False
+                        name = self.profile.get("name", "").strip()
+                        name_prefix = f"{name}, " if name else ""
+                        return f"{name_prefix}कृपया तुमचा स्ट्रीम स्पष्ट करा (PCM/PCB/Commerce/Arts/Vocational)", False
                 elif "नाही" in user_input_lower or "no" in user_input_lower or "न" in user_input_lower:
-                    return "कृपया तुमचा स्ट्रीम स्पष्ट करा (PCM/PCB/Commerce/Arts/Vocational)", False
+                    name = self.profile.get("name", "").strip()
+                    name_prefix = f"{name}, " if name else ""
+                    return f"{name_prefix}कृपया तुमचा स्ट्रीम स्पष्ट करा (PCM/PCB/Commerce/Arts/Vocational)", False
                 else:
                     # Direct stream input
                     stream_map = {
@@ -543,7 +581,9 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
                     if stream:
                         self.profile.set_stream(stream)
                     else:
-                        return "अवैध स्ट्रीम. कृपया PCM, PCB, Commerce, Arts किंवा Vocational निवडा.", False
+                        name = self.profile.get("name", "").strip()
+                        name_prefix = f"{name}, " if name else ""
+                        return f"{name_prefix}अवैध स्ट्रीम. कृपया PCM, PCB, Commerce, Arts किंवा Vocational निवडा.", False
             else:
                 # English
                 if "yes" in user_input_lower or "y" == user_input_lower:
@@ -551,9 +591,13 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
                         stream = self.detected_stream
                         self.profile.set_stream(stream)
                     else:
-                        return "Please specify your stream (PCM/PCB/Commerce/Arts/Vocational)", False
+                        name = self.profile.get("name", "").strip()
+                        name_prefix = f"{name}, " if name else ""
+                        return f"{name_prefix}Please specify your stream (PCM/PCB/Commerce/Arts/Vocational)", False
                 elif "no" in user_input_lower or "n" == user_input_lower:
-                    return "Please specify your stream (PCM/PCB/Commerce/Arts/Vocational)", False
+                    name = self.profile.get("name", "").strip()
+                    name_prefix = f"{name}, " if name else ""
+                    return f"{name_prefix}Please specify your stream (PCM/PCB/Commerce/Arts/Vocational)", False
                 else:
                     stream_map = {
                         "pcm": "PCM", "pcb": "PCB", "commerce": "Commerce",
@@ -563,7 +607,9 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
                     if stream:
                         self.profile.set_stream(stream)
                     else:
-                        return "Invalid stream. Please choose PCM, PCB, Commerce, Arts, or Vocational.", False
+                        name = self.profile.get("name", "").strip()
+                        name_prefix = f"{name}, " if name else ""
+                        return f"{name_prefix}Invalid stream. Please choose PCM, PCB, Commerce, Arts, or Vocational.", False
             
             # Stream confirmed, move to stream-specific questions
             if self.profile.get("stream"):
@@ -571,13 +617,18 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
                 logger.info(f"Stream confirmed: {confirmed_stream}, moving to stream-specific questions")
                 self.phase = self.PHASE_STREAM_QUESTIONS
                 self.stream_questions = self._get_stream_questions(confirmed_stream)
-                self.current_question_index = 0
+                self.stream_question_index = 0
+                self.current_question_index = 0  # Reset for stream questions
                 logger.debug(f"Loaded {len(self.stream_questions)} stream-specific questions for {confirmed_stream}")
                 
                 if self.stream_questions:
-                    question = self.stream_questions[0]
+                    question = self.stream_questions[self.stream_question_index]
                     logger.debug(f"First stream question: {question['id']}")
-                    return self._get_question_text(question), False
+                    # Calculate question number: general_count (already asked) + stream_question_index + 1
+                    general_count = len(self.data["questions"]["general"])
+                    question_number = general_count + self.stream_question_index + 1
+                    logger.debug(f"Question number calculation: {general_count} (general) + {self.stream_question_index + 1} (stream) = {question_number}")
+                    return self._get_question_text(question, question_number, self.total_questions), False
                 else:
                     # No stream-specific questions, move to recommendations
                     logger.info(f"No stream-specific questions for {confirmed_stream}, generating recommendations")
@@ -590,22 +641,26 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
         
         # Phase: Stream-specific Questions
         if self.phase == self.PHASE_STREAM_QUESTIONS:
-            if hasattr(self, 'stream_questions') and self.current_question_index < len(self.stream_questions):
-                question = self.stream_questions[self.current_question_index]
+            if hasattr(self, 'stream_questions') and self.stream_question_index < len(self.stream_questions):
+                question = self.stream_questions[self.stream_question_index]
                 logger.debug(f"Processing stream question {question['id']}: {user_input[:50]}...")
                 # Store answer in stream_aptitude
                 if "stream_aptitude" not in self.profile.data:
                     self.profile.data["stream_aptitude"] = {}
                 self.profile.data["stream_aptitude"][question["id"]] = user_input
                 
-                self.current_question_index += 1
-                logger.info(f"Stored stream answer for {question['id']}, question {self.current_question_index}/{len(self.stream_questions)}")
+                self.stream_question_index += 1
+                logger.info(f"Stored stream answer for {question['id']}, question {self.stream_question_index}/{len(self.stream_questions)}")
                 
                 # Check if more stream questions
-                if self.current_question_index < len(self.stream_questions):
-                    next_question = self.stream_questions[self.current_question_index]
+                if self.stream_question_index < len(self.stream_questions):
+                    next_question = self.stream_questions[self.stream_question_index]
                     logger.debug(f"Next stream question: {next_question['id']}")
-                    return self._get_question_text(next_question), False
+                    # Calculate question number: general_count (already asked) + stream_question_index + 1
+                    general_count = len(self.data["questions"]["general"])
+                    question_number = general_count + self.stream_question_index + 1
+                    logger.debug(f"Question number calculation: {general_count} (general) + {self.stream_question_index + 1} (stream) = {question_number}")
+                    return self._get_question_text(next_question, question_number, self.total_questions), False
                 else:
                     # All questions answered, generate recommendations
                     logger.info("All stream-specific questions answered, generating recommendations")
@@ -637,6 +692,7 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
         self.llm.clear_history()
         self.phase = self.PHASE_WELCOME
         self.current_question_index = 0
+        self.stream_question_index = 0
         self.language = current_language  # Restore language
         self.language_manually_set = language_was_set  # Restore flag
         if hasattr(self, 'detected_stream'):
@@ -648,4 +704,3 @@ Return ONLY JSON, no additional text. You must provide exactly 3 career recommen
     def get_current_phase(self) -> str:
         """Get current conversation phase."""
         return self.phase
-

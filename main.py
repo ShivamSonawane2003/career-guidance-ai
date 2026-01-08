@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from career_agent.agent import CareerGuidanceAgent
 import logging
 import uuid
+from urllib.parse import urlparse
 
 # Configure logging
 logging.basicConfig(
@@ -34,11 +35,73 @@ app = FastAPI(
 )
 
 # CORS middleware
-# In production, update allow_origins with your Streamlit Cloud URL
-allowed_origins = os.getenv(
-    "ALLOWED_ORIGINS",
-    "http://localhost:8501,http://localhost:8502"  # Default for local development
-).split(",")
+# Allow frontend from various origins
+def validate_origin(origin: str) -> bool:
+    """Validate that origin is a well-formed URL with scheme and host."""
+    try:
+        parsed = urlparse(origin.strip())
+        # Require scheme to be http or https
+        if parsed.scheme not in ['http', 'https']:
+            logger.warning(f"Invalid origin scheme: {origin} (scheme: {parsed.scheme})")
+            return False
+        # Require netloc (host) to be present
+        if not parsed.netloc:
+            logger.warning(f"Invalid origin: missing netloc: {origin}")
+            return False
+        # Forbid paths, queries, fragments, and params (origin must be scheme+host+optional port only)
+        if parsed.path or parsed.params or parsed.query or parsed.fragment:
+            logger.warning(f"Invalid origin: contains path/query/fragment: {origin}")
+            return False
+        # Validate hostname is non-empty
+        if not parsed.hostname:
+            logger.warning(f"Invalid origin: empty hostname: {origin}")
+            return False
+        return True
+    except (ValueError, AttributeError) as e:
+        logger.exception(f"Error parsing origin: {origin}")
+        return False
+
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "")
+is_production = os.getenv("ENV", "").lower() == "production" or os.getenv("PRODUCTION", "").lower() == "true"
+
+if allowed_origins_env:
+    # Parse and validate each origin
+    raw_origins = [origin.strip() for origin in allowed_origins_env.split(",") if origin.strip()]
+    allowed_origins = []
+    invalid_origins = []
+    
+    for origin in raw_origins:
+        if validate_origin(origin):
+            allowed_origins.append(origin.strip())
+        else:
+            invalid_origins.append(origin)
+            logger.warning(f"Invalid origin in ALLOWED_ORIGINS, skipping: {origin}")
+    
+    if invalid_origins:
+        logger.warning(f"Skipped {len(invalid_origins)} invalid origin(s) from ALLOWED_ORIGINS")
+    
+    # Production check: fail fast if no valid origins
+    if is_production and not allowed_origins:
+        error_msg = "PRODUCTION mode requires at least one valid origin in ALLOWED_ORIGINS. Please set ALLOWED_ORIGINS with valid URLs (e.g., https://yourdomain.com)."
+        logger.error(error_msg)
+        raise ValueError(error_msg)
+else:
+    # Default: Allow common local development origins
+    if is_production:
+        error_msg = "PRODUCTION mode requires ALLOWED_ORIGINS to be set. Please configure ALLOWED_ORIGINS environment variable with your production domain(s)."
+        logger.error(error_msg)
+        raise ValueError(error_msg)
+    
+    allowed_origins = [
+        "http://localhost:8501",
+        "http://localhost:8502", 
+        "http://localhost:3000",
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+        "http://localhost:8080",
+        "http://127.0.0.1:8080"
+    ]
+    logger.warning("ALLOWED_ORIGINS not set, falling back to localhost-only defaults. This is not suitable for production. Please set ALLOWED_ORIGINS environment variable.")
 
 app.add_middleware(
     CORSMiddleware,

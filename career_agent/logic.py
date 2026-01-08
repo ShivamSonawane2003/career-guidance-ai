@@ -34,8 +34,8 @@ class StreamDetector:
             "mr": ["कला", "मानवतावादी", "इतिहास", "मानसशास्त्र", "समाजशास्त्र", "साहित्य"]
         },
         "Vocational": {
-            "en": ["vocational", "skill", "trade", "technical", "certification", "diploma", "iti"],
-            "mr": ["व्यावसायिक", "कौशल्य", "व्यापार", "तांत्रिक", "प्रमाणपत्र"]
+            "en": ["vocational", "skill", "trade", "technical", "certification", "diploma", "iti", "practical", "hands-on"],
+            "mr": ["व्यावसायिक", "कौशल्य", "व्यापार", "तांत्रिक", "प्रमाणपत्र", "व्यावहारिक", "हाताने"]
         }
     }
     
@@ -255,6 +255,7 @@ class StudentProfile:
     
     def __init__(self):
         self.data = {
+            "name": "",
             "favourite_subjects": "",
             "weak_subjects": "",
             "marks_range": "",
@@ -291,6 +292,7 @@ class StudentProfile:
     def reset(self):
         """Reset profile to initial state."""
         self.data = {
+            "name": "",
             "favourite_subjects": "",
             "weak_subjects": "",
             "marks_range": "",

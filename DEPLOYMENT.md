@@ -246,22 +246,28 @@ gatherUsageStats = false
 - ✅ Use platform environment variables for backend
 - ❌ Never commit API keys to GitHub
 
-### 2. Update CORS Settings
+### 2. Configure ALLOWED_ORIGINS
 
-In `main.py`, update CORS for production:
+**IMPORTANT**: In production, you MUST set the `ALLOWED_ORIGINS` environment variable on your backend deployment platform.
 
-```python
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "https://your-app.streamlit.app",  # Your Streamlit Cloud URL
-        "http://localhost:8501"  # For local development
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-```
+The `ALLOWED_ORIGINS` variable should contain a comma-separated list of valid URLs (with http:// or https:// scheme) that are allowed to access your backend API.
+
+**Example values:**
+- For local development: `http://localhost:8501,http://localhost:3000`
+- For production: `https://your-app.streamlit.app,https://yourdomain.com`
+- Multiple origins: `https://app1.example.com,https://app2.example.com,https://app3.example.com`
+
+**Where to set it:**
+- **Railway**: Go to your service → Variables tab → Add `ALLOWED_ORIGINS`
+- **Render**: Go to your service → Environment tab → Add `ALLOWED_ORIGINS`
+- **Heroku**: Use `heroku config:set ALLOWED_ORIGINS="https://your-app.streamlit.app"`
+
+**Validation:**
+- The backend validates each origin to ensure it's a well-formed URL
+- Invalid origins are logged and skipped
+- In production mode (ENV=production or PRODUCTION=true), the backend will fail to start if no valid origins are configured
+
+**Note**: If `ALLOWED_ORIGINS` is not set, the backend defaults to localhost-only origins, which is NOT suitable for production. A warning will be logged.
 
 ### 3. Rate Limiting (Optional)
 

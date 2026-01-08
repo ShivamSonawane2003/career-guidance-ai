@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Guidance AI - Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Left Sidebar - Chat History -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Career Guidance AI</h2>
+            <button class="btn-new-chat" id="newChatBtn">
+                <span>+</span> New Chat
+            </button>
+        </div>
+        <div class="chat-history" id="chatHistory">
+            <!-- Chat history items will be dynamically added here -->
+        </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="main-content">
+        <!-- Chat Header -->
+        <header class="chat-header">
+            <div class="header-info">
+                <h1>Career Guidance Assistant</h1>
+                <p class="subtitle">Ask questions and get personalized career recommendations</p>
+            </div>
+            <div class="header-controls">
+                <div class="language-switch">
+                    <button class="lang-btn active" data-lang="en" id="langEn" aria-label="English">English</button>
+                    <button class="lang-btn" data-lang="mr" id="langMr" aria-label="Marathi">मराठी</button>
+                </div>
+                <button class="btn-restart" id="restartBtn" type="button" aria-label="Restart conversation" title="Restart Conversation">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                        <path d="M21 3v5h-5"></path>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                        <path d="M3 21v-5h5"></path>
+                    </svg>
+                </button>
+                <button class="btn-theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle Dark Mode">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Chat Messages Container -->
+        <div class="chat-container" id="chatContainer">
+            <div class="welcome-message" id="welcomeMessage">
+                <div class="welcome-icon">🎓</div>
+                <h2>Welcome to Career Guidance AI!</h2>
+                <p>I'll help you discover the perfect career path based on your academic stream and interests.</p>
+                <p>Let's start by answering a few questions. Type "hello" or click the button below to begin.</p>
+                <button class="btn-start" id="startBtn">Start Conversation</button>
+            </div>
+            <!-- Chat messages will be dynamically added here -->
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading-indicator" id="loadingIndicator" style="display: none;" role="status" aria-live="polite" aria-atomic="true">
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p>Bot is thinking...</p>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-container">
+                <button class="btn-mic" id="micBtn" type="button" aria-label="Voice input" title="Voice Input (if supported)">
+                    🎤
+                </button>
+                <label for="messageInput" class="sr-only">Message input</label>
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Type your message here..." 
+                    autocomplete="off"
+                    aria-label="Type your message"
+                >
+                <button class="btn-send" id="sendBtn" title="Send Message">
+                    <span>Send</span>
+                </button>
+            </div>
+            <div class="question-counter" id="questionCounter" style="display: none;">
+                <span id="currentQuestion">0</span> <span id="questionLabel">question</span>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

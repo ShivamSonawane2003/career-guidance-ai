@@ -139,85 +139,130 @@
   "questions": {
     "general": [
       {
+        "id": "name",
+        "text_en": "I'd love to get to know you better! Could you tell me your name? (e.g., Rahul, Priya, etc.)",
+        "text_mr": "मला तुम्हाला चांगल्या प्रकारे ओळखायचे आहे! कृपया तुमचे नाव सांगाल? (उदा., राहुल, प्रिया, इ.)"
+      },
+      {
         "id": "favourite_subjects",
-        "text_en": "What are your favourite subjects? (Please list 2-3 subjects like Physics, Chemistry, Mathematics, Biology, History, Geography, etc.)",
-        "text_mr": "तुमचे आवडते विषय कोणते? (कृपया 2-3 विषय सूचीबद्ध करा जसे की भौतिकशास्त्र, रसायनशास्त्र, गणित, जीवशास्त्र, इतिहास, भूगोल, इ.)"
+        "text_en": "That's great! Now, I'm curious - which subjects do you enjoy studying the most? Feel free to mention 2-3 subjects that really interest you. (e.g., Mathematics, Physics, English, History, etc.)",
+        "text_mr": "छान! आता मला जिज्ञासा आहे - तुम्हाला कोणते विषय अभ्यास करण्यात आनंद येतो? कृपया 2-3 विषय सांगा जे तुम्हाला खरोखर आवडतात. (उदा., गणित, भौतिकशास्त्र, इंग्रजी, इतिहास, इ.)"
       },
       {
         "id": "weak_subjects",
-        "text_en": "Which subjects do you find challenging or weak? (Please list 2-3 subjects like Physics, Chemistry, Mathematics, Biology, History, Geography, etc.)",
-        "text_mr": "कोणते विषय तुम्हाला आव्हानात्मक किंवा कमकुवत वाटतात? (कृपया 2-3 विषय सूचीबद्ध करा जसे की भौतिकशास्त्र, रसायनशास्त्र, गणित, जीवशास्त्र, इतिहास, भूगोल, इ.)"
+        "text_en": "Thanks for sharing that! On the flip side, are there any subjects that you find a bit more challenging or would like to improve in? (e.g., Chemistry, Biology, Accountancy, etc.)",
+        "text_mr": "हे सामायिक केल्याबद्दल धन्यवाद! दुसऱ्या बाजूला, असे काही विषय आहेत का जे तुम्हाला थोडे आव्हानात्मक वाटतात किंवा ज्यामध्ये तुम्ही सुधारणा करू इच्छिता? (उदा., रसायनशास्त्र, जीवशास्त्र, लेखाशास्त्र, इ.)"
       },
       {
         "id": "marks_range",
-        "text_en": "What is your expected marks range? (e.g., 80-90%, 70-80%, 60-70%, etc.)",
-        "text_mr": "तुमची अपेक्षित गुण श्रेणी काय आहे? (उदा., 80-90%, 70-80%, 60-70%, इ.)"
+        "text_en": "I appreciate your honesty! How are you doing academically? What marks range are you expecting or currently achieving? (e.g., 70-80%, 85-90%, above 90%, etc.)",
+        "text_mr": "तुमची प्रामाणिकता कौतुकास्पद आहे! शैक्षणिकदृष्ट्या तुम्ही कसे करत आहात? तुम्ही कोणती गुण श्रेणी अपेक्षित करत आहात किंवा सध्या मिळवत आहात? (उदा., 70-80%, 85-90%, 90% पेक्षा जास्त, इ.)"
       },
       {
         "id": "interests",
-        "text_en": "What are your interests and hobbies? (e.g., reading, sports, music, technology, etc.)",
-        "text_mr": "तुमचे आवडी आणि छंद काय आहेत? (उदा., वाचन, खेळ, संगीत, तंत्रज्ञान, कम्प्युटर, इ.)"
+        "text_en": "That's helpful to know! Beyond academics, what activities or hobbies do you enjoy? What keeps you engaged when you're not studying? (e.g., playing sports, reading books, coding, music, art, etc.)",
+        "text_mr": "हे जाणून घेणे उपयुक्त आहे! शैक्षणिक बाबींच्या पलीकडे, तुम्हाला कोणत्या क्रियाकलाप किंवा छंद आवडतात? अभ्यास न करत असताना तुम्हाला काय व्यस्त ठेवते? (उदा., खेळ खेळणे, पुस्तके वाचणे, कोडिंग, संगीत, कला, इ.)"
+      },
+      {
+        "id": "future_goals",
+        "text_en": "I'm getting a good picture! When you think about your future, what kind of work environment appeals to you? Do you see yourself in an office, a lab, working with people, or perhaps creating something hands-on? (e.g., corporate office, research lab, hospital, workshop, field work, etc.)",
+        "text_mr": "मला चांगली कल्पना येत आहे! जेव्हा तुम्ही तुमच्या भविष्याबद्दल विचार करता, तेव्हा कोणत्या प्रकारचे कामाचे वातावरण तुम्हाला आकर्षित करते? तुम्ही स्वतःला ऑफिसमध्ये, प्रयोगशाळेत, लोकांसह काम करताना किंवा कदाचित हाताने काहीतरी निर्माण करताना पाहतात? (उदा., कॉर्पोरेट ऑफिस, संशोधन प्रयोगशाळा, रुग्णालय, कार्यशाळा, मैदानी काम, इ.)"
+      },
+      {
+        "id": "problem_solving",
+        "text_en": "Interesting! How do you typically approach problems? Do you like breaking them down step by step, thinking creatively, or do you prefer working with others to find solutions? (e.g., analyze step-by-step, brainstorm ideas, discuss with friends, research online, etc.)",
+        "text_mr": "मनोरंजक! तुम्ही सामान्यतः समस्यांना कसे हाताळता? तुम्हाला त्यांना पायरी-पायरीने मोडणे, सर्जनशीलतेने विचार करणे आवडते का, किंवा तुम्ही उपाय शोधण्यासाठी इतरांसह काम करणे पसंत करता? (उदा., पायरी-पायरीने विश्लेषण करणे, कल्पना मांडणे, मित्रांसोबत चर्चा करणे, ऑनलाइन संशोधन करणे, इ.)"
+      },
+      {
+        "id": "learning_style",
+        "text_en": "Great! When you learn something new, what helps you understand it better? Doing it yourself, watching someone do it, or reading about it? (e.g., hands-on practice, watching videos, reading textbooks, group discussions, etc.)",
+        "text_mr": "छान! जेव्हा तुम्ही काहीतरी नवीन शिकता, तेव्हा ते अधिक चांगल्या प्रकारे समजून घेण्यासाठी काय मदत करते? स्वतः करणे, एखाद्याला करताना पाहणे, किंवा त्याबद्दल वाचणे? (उदा., हाताने सराव करणे, व्हिडिओ पाहणे, पाठ्यपुस्तके वाचणे, गट चर्चा, इ.)"
       }
     ],
     "stream_specific": {
       "PCM": [
         {
           "id": "math_aptitude",
-          "text_en": "How comfortable are you with advanced mathematics and problem-solving?(e.g, Yes, No, etc.)",
-          "text_mr": "प्रगत गणित आणि समस्या सोडवण्यासाठी तुम्ही किती सोयीस्कर आहात?(उदा., हो, नाही, इ.)"
+          "text_en": "I see! When you get a difficult problem in math or physics, how do you feel? Do you want to solve it, or does it feel too hard? (e.g., excited to solve it, determined to figure it out, or overwhelmed and need help)",
+          "text_mr": "मला समजले! जेव्हा तुम्हाला गणित किंवा भौतिकशास्त्रात कठीण समस्या मिळते, तेव्हा तुम्हाला कसे वाटते? तुम्हाला ते सोडवायचे आहे का, किंवा ते खूप कठीण वाटते का? (उदा., ते सोडवण्यासाठी उत्साहित, ते समजून घेण्यासाठी निश्चय, किंवा अधिक आणि मदतीची गरज)"
         },
         {
           "id": "engineering_interest",
-          "text_en": "Are you interested in engineering, technology, or innovation?(e.g, Yes, No, etc.)",
-          "text_mr": "तुम्हाला अभियांत्रिकी, तंत्रज्ञान किंवा नवकल्पनेमध्ये रस आहे का?(उदा., हो, नाही, इ.)"
+          "text_en": "Good! When you see things like phones, buildings, or machines, do you wonder how they were made? Do you think about how they work? (e.g., curious about construction, interested in technology, want to understand mechanisms, etc.)",
+          "text_mr": "चांगले! जेव्हा तुम्ही फोन, इमारती किंवा मशीन यासारख्या गोष्टी पाहता, तेव्हा तुम्हाला आश्चर्य वाटते का की ते कसे बनवले गेले? तुम्ही विचार करता का की ते कसे कार्य करतात? (उदा., बांधकामाबद्दल जिज्ञासा, तंत्रज्ञानात रस, यंत्रणा समजून घेण्याची इच्छा, इ.)"
+        },
+        {
+          "id": "technology_curiosity",
+          "text_en": "Interesting! When you hear about new technology or science news, what do you think? Do you want to know how it works, or how people use it? (e.g., want to understand the science behind it, interested in practical applications, curious about innovations, etc.)",
+          "text_mr": "मनोरंजक! जेव्हा तुम्ही नवीन तंत्रज्ञान किंवा विज्ञान बातम्याबद्दल ऐकता, तेव्हा तुम्ही काय विचार करता? तुम्हाला ते कसे कार्य करते हे जाणून घ्यायचे आहे का, किंवा लोक ते कसे वापरतात? (उदा., त्यामागील विज्ञान समजून घ्यायची इच्छा, व्यावहारिक उपयोगांमध्ये रस, नवकल्पनांबद्दल जिज्ञासा, इ.)"
         }
       ],
       "PCB": [
         {
           "id": "biology_interest",
-          "text_en": "How interested are you in biology, healthcare, or life sciences?(e.g, Yes, No, etc.)",
-          "text_mr": "जीवशास्त्र, आरोग्यसेवा किंवा जीवन विज्ञानामध्ये तुम्हाला किती रस आहे?(उदा., हो, नाही, इ.)"
+          "text_en": "I see! When you learn about the human body or medical news, what do you think? Do you want to know the science, or how it helps people? (e.g., fascinated by body systems, interested in medical treatments, want to help people, etc.)",
+          "text_mr": "मला समजले! जेव्हा तुम्ही मानवी शरीर किंवा वैद्यकीय बातम्याबद्दल शिकता, तेव्हा तुम्ही काय विचार करता? तुम्हाला विज्ञान जाणून घ्यायचे आहे का, किंवा ते लोकांना कसे मदत करते? (उदा., शरीर प्रणालींनी मोहित, वैद्यकीय उपचारांमध्ये रस, लोकांना मदत करायची इच्छा, इ.)"
         },
         {
           "id": "medical_interest",
-          "text_en": "Are you interested in pursuing a career in medicine or healthcare?(e.g, Yes, No, etc.)",
-          "text_mr": "तुम्हाला वैद्यकीय किंवा आरोग्यसेवा क्षेत्रात करिअर करण्यात रस आहे का?(उदा., हो, नाही, इ.)"
+          "text_en": "Good! When you see someone who is sick or hear about health problems, what do you want to do? Do you want to help them or understand what's wrong? (e.g., want to provide care, curious about diagnosis, interested in treatment, etc.)",
+          "text_mr": "चांगले! जेव्हा तुम्ही एखाद्याला आजारी पाहता किंवा आरोग्य समस्यांबद्दल ऐकता, तेव्हा तुम्ही काय करू इच्छिता? तुम्हाला त्यांना मदत करायची आहे का किंवा काय चुकत आहे हे समजून घ्यायचे आहे? (उदा., काळजी प्रदान करायची इच्छा, निदानाबद्दल जिज्ञासा, उपचारांमध्ये रस, इ.)"
+        },
+        {
+          "id": "life_sciences",
+          "text_en": "Nice! When you think about medicine or biology in the future, what excites you? Finding cures for diseases, or learning more about life? (e.g., medical research, discovering new treatments, understanding living organisms, etc.)",
+          "text_mr": "छान! जेव्हा तुम्ही भविष्यात औषध किंवा जीवशास्त्राबद्दल विचार करता, तेव्हा तुम्हाला काय उत्साहित करते? रोगांसाठी उपचार शोधणे, किंवा जीवनाबद्दल अधिक शिकणे? (उदा., वैद्यकीय संशोधन, नवीन उपचार शोधणे, सजीवांचे समजून घेणे, इ.)"
         }
       ],
       "Commerce": [
         {
           "id": "business_interest",
-          "text_en": "Are you interested in business, finance, or entrepreneurship?(e.g, Yes, No, etc.)",
-          "text_mr": "तुम्हाला व्यवसाय, वित्त किंवा उद्योजकतेमध्ये रस आहे का?(उदा., हो, नाही, इ.)"
+          "text_en": "I see! When you see a successful business or someone starting a company, what interests you? How they run it, the money part, or their plan? (e.g., management strategies, financial aspects, business planning, marketing, etc.)",
+          "text_mr": "मला समजले! जेव्हा तुम्ही यशस्वी व्यवसाय किंवा एखाद्याने कंपनी सुरू केल्याबद्दल पाहता, तेव्हा तुम्हाला काय आवडते? ते कसे चालवतात, पैशाचा भाग, किंवा त्यांची योजना? (उदा., व्यवस्थापन धोरणे, आर्थिक बाबी, व्यवसाय नियोजन, विपणन, इ.)"
         },
         {
           "id": "accounting_aptitude",
-          "text_en": "How comfortable are you with numbers, accounting, and financial calculations?(e.g, Yes, No, etc.)",
-          "text_mr": "संख्या, लेखा आणि आर्थिक गणनांसाठी तुम्ही किती सोयीस्कर आहात?(उदा., हो, नाही, इ.)"
+          "text_en": "Good! When you work with numbers - like calculating, analyzing data, or organizing info - how does it feel? Easy and natural, or something you want to improve? (e.g., enjoy working with numbers, find it challenging but interesting, prefer other tasks, etc.)",
+          "text_mr": "चांगले! जेव्हा तुम्ही संख्यांसह काम करता - जसे की गणना करणे, डेटाचे विश्लेषण करणे, किंवा माहिती व्यवस्थित करणे - तेव्हा ते कसे वाटते? सोपे आणि नैसर्गिक, किंवा काहीतरी ज्यामध्ये तुम्ही सुधारणा करू इच्छिता? (उदा., संख्यांसह काम करण्यात आनंद, आव्हानात्मक पण मनोरंजक, इतर कार्यांना प्राधान्य, इ.)"
+        },
+        {
+          "id": "financial_thinking",
+          "text_en": "Nice! When you think about money, savings, or planning finances, what do you do? Do you like to plan carefully, or are you more interested in how the economy works? (e.g., budget planning, investment strategies, understanding market trends, economic policies, etc.)",
+          "text_mr": "छान! जेव्हा तुम्ही पैशाबद्दल, बचत किंवा आर्थिक नियोजनाबद्दल विचार करता, तेव्हा तुम्ही काय करता? तुम्हाला काळजीपूर्वक नियोजन करणे आवडते का, किंवा तुम्हाला अर्थव्यवस्था कशी कार्य करते यामध्ये अधिक रस आहे? (उदा., अंदाज नियोजन, गुंतवणूक धोरणे, बाजारातील प्रवृत्ती समजून घेणे, आर्थिक धोरणे, इ.)"
         }
       ],
       "Arts": [
         {
           "id": "creativity",
-          "text_en": "How would you rate your creativity and interest in humanities subjects?(e.g, 7/10, 8/10, etc.)",
-          "text_mr": "तुम्ही तुमची सर्जनशीलता आणि मानवतावादी विषयांमध्ये रस कसा मोजाल?(उदा., 7/10, 8/10, इ.)"
+          "text_en": "I see! When you have free time, what do you like to do? Do you write, draw, read stories, or think about people and society? (e.g., creative writing, painting, reading literature, social issues, etc.)",
+          "text_mr": "मला समजले! जेव्हा तुमच्याकडे मोकळा वेळ असतो, तेव्हा तुम्हाला काय करायला आवडते? तुम्ही लिहिता, रेखाटता, कथा वाचता, किंवा लोक आणि समाजाबद्दल विचार करता? (उदा., सर्जनशील लेखन, चित्रकला, साहित्य वाचन, सामाजिक समस्या, इ.)"
         },
         {
           "id": "communication",
-          "text_en": "How strong are your communication and writing skills? (e.g., 7/10, 8/10, etc.)",
-          "text_mr": "तुमची संप्रेषण आणि लेखन कौशल्ये किती मजबूत आहेत? (उदा., 7/10, 8/10, इ.)"
+          "text_en": "Good! When you need to explain something or share your ideas, how do you do it? By writing, talking, or through stories and art? (e.g., essays/articles, presentations, storytelling, visual arts, debates, etc.)",
+          "text_mr": "चांगले! जेव्हा तुम्हाला काहीतरी स्पष्ट करावे लागते किंवा तुमच्या कल्पना सामायिक कराव्या लागतात, तेव्हा तुम्ही ते कसे करता? लिहून, बोलून, किंवा कथा आणि कलाद्वारे? (उदा., निबंध/लेख, सादरीकरण, कथाकथन, दृश्य कला, वादविवाद, इ.)"
+        },
+        {
+          "id": "humanities_interest",
+          "text_en": "Nice! When you read about history, psychology, or social topics, what interests you? Why people do things, or how society has changed over time? (e.g., historical events, human behavior, social movements, cultural changes, etc.)",
+          "text_mr": "छान! जेव्हा तुम्ही इतिहास, मानसशास्त्र किंवा सामाजिक विषयांबद्दल वाचता, तेव्हा तुम्हाला काय आवडते? लोक गोष्टी का करतात, किंवा कालांतराने समाज कसा बदलला आहे? (उदा., ऐतिहासिक घटना, मानवी वर्तन, सामाजिक चळवळी, सांस्कृतिक बदल, इ.)"
         }
       ],
       "Vocational": [
         {
           "id": "practical_skills",
-          "text_en": "What practical skills or trades interest you? (e.g., carpentry, plumbing, welding, etc.)  ",
-          "text_mr": "कोणती व्यावहारिक कौशल्ये किंवा व्यापार तुम्हाला आकर्षित करतात?(उदा., जस्ती, पाणी, वेंडिंग, इ.)"
+          "text_en": "I see! When something breaks or needs to be made, what do you do? Do you want to fix it or make it yourself, or learn how things work by doing? (e.g., repair electronics, build furniture, fix vehicles, create crafts, etc.)",
+          "text_mr": "मला समजले! जेव्हा काहीतरी तुटते किंवा बनवण्याची आवश्यकता असते, तेव्हा तुम्ही काय करता? तुम्हाला ते दुरुस्त करायचे आहे का किंवा स्वतः बनवायचे आहे, किंवा करून गोष्टी कशा कार्य करतात हे शिकायचे आहे? (उदा., इलेक्ट्रॉनिक्स दुरुस्त करणे, फर्निचर बनवणे, वाहने दुरुस्त करणे, हस्तकला निर्माण करणे, इ.)"
         },
         {
           "id": "certification_interest",
-          "text_en": "Are you interested in skill-based certifications and hands-on work?(e.g, Yes, No, etc.)",
-          "text_mr": "तुम्हाला कौशल्य-आधारित प्रमाणपत्रे आणि हाताने काम करण्यात रस आहे का?(उदा., हो, नाही, इ.)"
+          "text_en": "Good! When you think about learning new skills, what do you prefer? Learning by doing right away, or getting certificates that show you know it? (e.g., hands-on training, skill certificates, trade certifications, professional qualifications, etc.)",
+          "text_mr": "चांगले! जेव्हा तुम्ही नवीन कौशल्ये शिकण्याबद्दल विचार करता, तेव्हा तुम्ही काय पसंत करता? लगेच करून शिकणे, किंवा तुम्हाला ते माहित आहे हे दर्शविणारी प्रमाणपत्रे मिळवणे? (उदा., हाताने प्रशिक्षण, कौशल्य प्रमाणपत्रे, व्यापार प्रमाणपत्रे, व्यावसायिक पात्रता, इ.)"
+        },
+        {
+          "id": "hands_on_learning",
+          "text_en": "Nice! Have you had any experience with workshops, tools, or apprenticeships? When learning a practical skill, do you prefer hands-on practice, watching demonstrations, or reading instructions? (e.g., ITI training, workshop experience, tool handling, apprenticeship programs, etc.)",
+          "text_mr": "छान! तुम्हाला कार्यशाळा, साधने किंवा शिकाऊवर्ग यांचा अनुभव आहे का? व्यावहारिक कौशल्य शिकताना, तुम्ही हाताने सराव करणे, प्रात्यक्षिक पाहणे, किंवा सूचना वाचणे यापैकी काय पसंत करता? (उदा., आयटीआय प्रशिक्षण, कार्यशाळा अनुभव, साधन हाताळणे, शिकाऊवर्ग कार्यक्रम, इ.)"
         }
       ]
     }
